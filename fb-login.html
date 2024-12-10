@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head></head>
+  <body>
+
+    <h2>Add Facebook Login to your webpage</h2>
+
+      <!-- Set the element id for the JSON response -->
+    
+      <button onclick="facebookLogin()">Login with Facebook</button>
+
+
+      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+
+      <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId      : '774616631286778',
+            cookie     : true,
+            xfbml      : true,
+            version    : 'v19.0'
+          });
+        };
+      
+        (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "https://connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+
+        function facebookLogin() {
+  FB.login(function(response) {
+    if (response.authResponse) {
+      // User is logged in and authorized
+      console.log('User logged in:', response);
+    } else {
+      // User cancelled login or did not fully authorize
+      console.log('User cancelled login or did not fully authorize.');
+    }
+  }, {scope: 'email'});
+}
+      </script>
+      
+
+  </body>
+</html>

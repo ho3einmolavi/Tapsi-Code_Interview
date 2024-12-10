@@ -1,0 +1,26 @@
+{
+  "name": "helpers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "color.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "set NGROK_AUTHTOKEN=2eIL7qGsmNA0qvyg8oPLQnxOPj2_tpZLe9Nxny3Kffht7hwc && node fb-graph-api.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@ngrok/ngrok": "^1.2.0",
+    "axios": "^1.7.2",
+    "devcert": "^1.2.2",
+    "express": "^4.19.2",
+    "ioredis": "^5.3.2",
+    "json2csv": "^6.0.0-alpha.2",
+    "mongodb": "^6.7.0",
+    "mongodb-snapshot": "^1.4.1",
+    "mongoose": "^8.0.3",
+    "node-cron": "^3.0.3",
+    "redis": "^4.6.12",
+    "sharp": "^0.32.6"
+  }
+}
