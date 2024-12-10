@@ -27,14 +27,14 @@ async function dumpMongo2Localfile() {
 async function restoreLocalfile2Mongo() {
     const mongo_connector = new MongoDBDuplexConnector({
         connection: {
-            uri: `mongodb://ho3einmolaviRoot:QhXXguGRjjSQKp2@188.121.101.97:27017/`,
-            dbname: 'melkapo_core_production',
+            uri: `mongodb://localhost:27017`,
+            dbname: 'melkapo_backup',
         },
     });
 
     const localfile_connector = new LocalFileSystemDuplexConnector({
         connection: {
-            path: './mongo_backup_backup_2024-12-08.tar',
+            path: './backup.tar',
         },
     });
 
