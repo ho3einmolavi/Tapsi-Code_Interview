@@ -106,17 +106,17 @@ const collectMetrics = async (server) => {
     const memUsageCmd = "free -m | awk '/Mem:/ { print $3, $2 }'";
     const diskUsageCmd = "df -h / | awk 'NR==2 {print $5}'";
     const netUsageCmd = "cat /sys/class/net/eth0/statistics/rx_bytes && cat /sys/class/net/eth0/statistics/tx_bytes";
-    const responseTimeCmd = "curl -o /dev/null -s -w '%{time_total}' http://localhost";
+    // const responseTimeCmd = "curl -o /dev/null -s -w '%{time_total}' http://localhost";
     const uptimeCmd = "uptime -p";
 
     // Execute commands
-    const [loadAvg, cpuIdle, memInfo, diskUsage, netUsage, responseTime, uptime] = await Promise.all([
+    const [loadAvg, cpuIdle, memInfo, diskUsage, netUsage, uptime] = await Promise.all([
       executeCommand(server, loadAvgCmd),
       executeCommand(server, cpuUsageCmd),
       executeCommand(server, memUsageCmd),
       executeCommand(server, diskUsageCmd),
       executeCommand(server, netUsageCmd),
-      executeCommand(server, responseTimeCmd),
+      // executeCommand(server, responseTimeCmd),
       executeCommand(server, uptimeCmd),
     ]);
 
@@ -138,7 +138,7 @@ const collectMetrics = async (server) => {
     const txMB = (txBytes / (1024 * 1024)).toFixed(2);
 
     // Parse Response Time
-    const responseTimeSeconds = parseFloat(responseTime.trim()).toFixed(2);
+    // const responseTimeSeconds = parseFloat(responseTime.trim()).toFixed(2);
 
     // Parse Uptime
     const serverUptime = uptime.trim();
@@ -153,7 +153,7 @@ const collectMetrics = async (server) => {
       diskUsage: `${diskUsagePercent}%`,
       rxBytes: parseFloat(rxMB),
       txBytes: parseFloat(txMB),
-      responseTime: parseFloat(responseTimeSeconds),
+      // responseTime: parseFloat(responseTimeSeconds),
       uptime: serverUptime,
     };
   } catch (error) {
@@ -167,7 +167,7 @@ const calculateScore = (metrics) => {
   const weights = {
     loadAvg1m: 0.4,       // Higher weight
     cpuUsage: 0.3,
-    responseTime: 0.2,
+    // responseTime: 0.2,
     memUsedRatio: 0.05,    // Ratio of used memory to total
     diskUsage: 0.05,
     network: 0.0,          // Currently not weighted
@@ -178,7 +178,7 @@ const calculateScore = (metrics) => {
   const score =
     (metrics.loadAverages[0] * weights.loadAvg1m) +
     (parseFloat(metrics.cpuUsage) * weights.cpuUsage) +
-    (metrics.responseTime * weights.responseTime) +
+    // (metrics.responseTime * weights.responseTime) +
     (memUsedRatio * weights.memUsedRatio) +
     (parseFloat(metrics.diskUsage) * weights.diskUsage) +
     ((metrics.rxBytes + metrics.txBytes) * weights.network); // Not contributing currently
@@ -212,7 +212,7 @@ const compareServers = async (key) => {
       Host: metric.host,
       'Load Avg (1m)': metric.loadAverages[0],
       'CPU Usage': metric.cpuUsage,
-      'Response Time (s)': metric.responseTime,
+      // 'Response Time (s)': metric.responseTime,
       'Memory Used (MB)': metric.memUsed,
       'Memory Total (MB)': metric.memTotal,
       'Disk Usage (%)': metric.diskUsage,
@@ -226,7 +226,7 @@ const compareServers = async (key) => {
       'Host',
       'Load Avg (1m)',
       'CPU Usage',
-      'Response Time (s)',
+      // 'Response Time (s)',
       'Memory Used (MB)',
       'Memory Total (MB)',
       'Disk Usage (%)',
@@ -250,7 +250,7 @@ const compareServers = async (key) => {
     'DiskUsage',
     'NetRX_MB',
     'NetTX_MB',
-    'ResponseTime_s',
+    // 'ResponseTime_s',
     'Uptime',
     'Score',
   ];
@@ -266,7 +266,7 @@ const compareServers = async (key) => {
     metric.diskUsage,
     metric.rxBytes,
     metric.txBytes,
-    metric.responseTime,
+    // metric.responseTime,
     metric.uptime.replace(',', '-'),
     metric.score.toFixed(2),
   ]);
@@ -283,7 +283,7 @@ const compareServers = async (key) => {
   console.log(`Server: ${optimalServer.server} (${optimalServer.host})`);
   console.log(`Load Averages (1m, 5m, 15m): ${optimalServer.loadAverages.join(', ')}`);
   console.log(`CPU Usage: ${optimalServer.cpuUsage}`);
-  console.log(`Response Time: ${optimalServer.responseTime} seconds`);
+  // console.log(`Response Time: ${optimalServer.responseTime} seconds`);
   console.log(`Memory Usage: ${optimalServer.memUsed}MB / ${optimalServer.memTotal}MB`);
   console.log(`Disk Usage: ${optimalServer.diskUsage}%`);
   console.log(`Network RX: ${optimalServer.rxBytes} MB, TX: ${optimalServer.txBytes} MB`);
