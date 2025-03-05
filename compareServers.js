@@ -1,5 +1,3 @@
-// compareServers.js
-
 const { Client } = require('ssh2');
 const chalk = require('chalk');
 const fs = require('fs')
